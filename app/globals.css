@@ -131,6 +131,14 @@ h1, h2, h3, p { margin: 0; }
 .promo .b-sub { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
 .promo .b-copy { font-size: 13px; line-height: 18px; margin-top: 6px; }
 .promo .b-author { font-size: 12px; color: var(--text-secondary); margin: 4px 0 10px; }
+@media (min-width: 1024px) {
+  .promo { padding: 24px 28px; gap: 28px; }
+  .promo .cover { width: 170px; }
+  .promo .b-title { font-size: 20px; line-height: 26px; }
+  .promo .b-sub { font-size: 14px; margin-top: 4px; }
+  .promo .b-copy { font-size: 15px; line-height: 22px; margin-top: 8px; }
+  .promo .b-author { font-size: 13px; margin: 6px 0 12px; }
+}
 .pstores { display: flex; gap: 6px; flex-wrap: wrap; }
 .pstore { height: 32px; padding: 0 12px; border-radius: 16px; background: var(--bg); border: 1px solid var(--border); font-size: 12px; font-weight: 500; display: inline-flex; align-items: center; cursor: pointer; transition: background 0.1s; color: var(--text); }
 .pstore:hover { background: var(--btn-bg-hover); }
@@ -151,8 +159,9 @@ h1, h2, h3, p { margin: 0; }
   .colmain { flex: 1; min-width: 0; }
   .colmain .trow, .colmain .ctx { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
   .colrail { width: 340px; flex: none; }
-  .colrail .promo { margin: 12px 0 0; flex-direction: column; text-align: center; padding: 20px 16px; }
-  .colrail .promo .cover { width: 150px; margin: 0 auto 4px; }
+  .colrail .promo { margin: 12px 0 0; flex-direction: column; text-align: center; padding: 20px 16px; gap: 14px; }
+  .colrail .promo .cover { width: 190px; margin: 0 auto; }
+  .colrail .promo .b-title { font-size: 17px; line-height: 23px; }
   .colrail .pstores { justify-content: center; }
 }
 
