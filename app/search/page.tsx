@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { search } from '@/db/queries';
+import { redirect } from 'next/navigation';
+import { getVideoByNo, search } from '@/db/queries';
 import { TemplateCard } from '../../components/TemplateCard';
 import { VideoCard } from '../../components/VideoCard';
 
@@ -8,6 +9,14 @@ export const dynamic = 'force-dynamic'; // 검색만 동적 — 나머지 페이
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const { q } = await searchParams;
+
+  // 영상 번호 직행: '18', '18d', '18c' 등 짧은 링크 패턴이면 검색 없이 상세로
+  const noMatch = q?.trim().toLowerCase().match(/^(\d{1,6})[a-z]?$/);
+  if (noMatch) {
+    const v = await getVideoByNo(Number(noMatch[1]));
+    if (v) redirect(`/videos/${v.id}`);
+  }
+
   const result = q?.trim() ? await search(q.trim()) : null;
   return (
     <>

@@ -129,6 +129,12 @@ export async function getLatestVideos(limit = 6) {
     .limit(limit);
 }
 
+/** 영상 번호로 직접 조회 — 검색창에 '18'·'18d'처럼 번호를 치면 상세로 직행시키는 용도 */
+export async function getVideoByNo(no: number) {
+  const [v] = await db.select({ id: t.videos.id }).from(t.videos).where(eq(t.videos.videoNo, no));
+  return v ?? null;
+}
+
 /** 검색 — 템플릿·영상 제목 (pg_trgm 인덱스, 소규모라 ILIKE로 충분) */
 export async function search(q: string) {
   const like = `%${q}%`;
