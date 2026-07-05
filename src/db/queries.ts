@@ -160,7 +160,8 @@ export async function getVideoByNo(no: number) {
 
 /** 검색 — 템플릿·영상 제목 (pg_trgm 인덱스, 소규모라 ILIKE로 충분) */
 export async function search(q: string) {
-  const like = `%${q}%`;
+  // LIKE 와일드카드(%, _, \)를 리터럴로 이스케이프 — 사용자 입력이 패턴이 되지 않게 (보안감사 L-3)
+  const like = `%${q.replace(/[\\%_]/g, '\\$&')}%`;
   const templates = await db.select({
     slug: t.templates.slug, title: t.templates.title, type: t.templates.type,
     previewPath: t.templates.previewPath, requiresAuth: t.templates.requiresAuth,

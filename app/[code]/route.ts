@@ -22,7 +22,10 @@ export async function GET(req: NextRequest, ctx: { params: Promise<{ code: strin
       .from(t.shortLinks)
       .where(eq(t.shortLinks.slug, slug));
     if (!link) return new NextResponse(null, { status: 404 }); // 존재한 적 없는 번호만 404
-    target = `${link.targetPath}?via=${slug}`;
+    // 방어심층(보안감사 M-3): 같은 오리진 경로만 허용 — DB 오염 시 외부 오픈 리다이렉트 차단.
+    const path = link.targetPath.startsWith('/') && !link.targetPath.startsWith('//')
+      ? link.targetPath : '/';
+    target = `${path}?via=${slug}`;
   } catch {
     // DB 다운 — 목적지를 모르므로 홈으로. 시청자의 이동 자체는 막지 않는다.
   }

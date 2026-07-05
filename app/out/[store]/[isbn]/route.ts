@@ -19,7 +19,9 @@ export async function GET(req: NextRequest, ctx: { params: Promise<{ store: stri
   } catch { /* fail-open */ }
   if (!url) return NextResponse.redirect(new URL('/', req.nextUrl.origin), 302);
 
-  const videoId = req.nextUrl.searchParams.get('v');
+  // ?v= 는 유튜브 videoId 형식만 통과 — 위조 값 저장/FK 위반 유실 방지 (보안감사 L-2)
+  const rawV = req.nextUrl.searchParams.get('v');
+  const videoId = rawV && /^[\w-]{11}$/.test(rawV) ? rawV : null;
   const userAgent = req.headers.get('user-agent');
   after(async () => {
     try {
