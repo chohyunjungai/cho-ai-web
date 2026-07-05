@@ -4,6 +4,7 @@
 import { NextRequest, NextResponse, after } from 'next/server';
 import { eq, sql } from 'drizzle-orm';
 import { db, t } from '@/db/schema-route';
+import { allowWrite, clientIp } from '@/rate-limit';
 
 const SLUG_RE = /^\d+[a-z]?$/;
 
@@ -32,11 +33,14 @@ export async function GET(req: NextRequest, ctx: { params: Promise<{ code: strin
 
   const res = NextResponse.redirect(new URL(target, req.nextUrl.origin), 302);
 
-  // 클릭 기록 — 응답 이후 비동기, 실패해도 무시 (fail-open)
+  // 클릭 기록 — 응답 이후 비동기, 실패해도 무시 (fail-open).
+  // IP 레이트리밋 초과 시 기록만 스킵한다. 리다이렉트는 이미 위에서 반환됨(막지 않는다).
   const referrer = req.headers.get('referer');
   const userAgent = req.headers.get('user-agent');
+  const ip = clientIp(req.headers);
   after(async () => {
     try {
+      if (!(await allowWrite(ip))) return; // 스팸 캡 — 로그 폭주/비용 증폭 방지
       await db.execute(sql`
         INSERT INTO clicks (link_slug, referrer, user_agent)
         VALUES (${slug}, ${referrer}, ${userAgent})`);

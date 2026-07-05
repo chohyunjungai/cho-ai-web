@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse, after } from 'next/server';
 import { and, eq, sql } from 'drizzle-orm';
 import { db, t } from '@/db/schema-route';
+import { allowWrite, clientIp } from '@/rate-limit';
 
 const STORES = new Set(['kyobo', 'yes24', 'aladin', 'other']);
 
@@ -23,8 +24,10 @@ export async function GET(req: NextRequest, ctx: { params: Promise<{ store: stri
   const rawV = req.nextUrl.searchParams.get('v');
   const videoId = rawV && /^[\w-]{11}$/.test(rawV) ? rawV : null;
   const userAgent = req.headers.get('user-agent');
+  const ip = clientIp(req.headers);
   after(async () => {
     try {
+      if (!(await allowWrite(ip))) return; // IP 레이트리밋 초과 시 기록만 스킵 (리다이렉트는 유지)
       await db.execute(sql`
         INSERT INTO outbound_clicks (isbn, store, video_id, user_agent)
         VALUES (${isbn}, ${store}, ${videoId}, ${userAgent})`);

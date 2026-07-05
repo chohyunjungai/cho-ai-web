@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getVideoByNo, search } from '@/db/queries';
+import { allowSearch, clientIp } from '@/rate-limit';
 import { TemplateCard } from '../../components/TemplateCard';
 import { VideoCard } from '../../components/VideoCard';
 
@@ -17,13 +19,21 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     if (v) redirect(`/videos/${v.id}`);
   }
 
-  const result = q?.trim() ? await search(q.trim()) : null;
+  // IP 레이트리밋 (보안감사 M-2) — 동적 ILIKE 쿼리 남용 방지. 초과 시 쿼리 없이 안내.
+  const throttled = q?.trim() ? !(await allowSearch(clientIp(await headers()))) : false;
+  const result = q?.trim() && !throttled ? await search(q.trim()) : null;
   return (
     <>
       <form className="searchbox" action="/search" role="search">
         <input name="q" defaultValue={q ?? ''} placeholder="어떤 반복 작업을 자동화할까요?" autoFocus aria-label="검색어" />
         <button className="btn" type="submit">검색</button>
       </form>
+      {throttled && (
+        <div className="empty">
+          <p style={{ fontWeight: 700, marginBottom: 6 }}>잠시만요 — 검색이 너무 빨라요</p>
+          <p>몇 초 후 다시 시도해 주세요.</p>
+        </div>
+      )}
       {result && (
         <>
           {result.templates.length > 0 && (
