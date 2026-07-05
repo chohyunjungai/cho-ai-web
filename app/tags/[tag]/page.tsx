@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { eq } from 'drizzle-orm';
 import { db, t } from '@/db/app';
-import { getTag, getTaskTags, getTemplates } from '@/db/queries';
+import { getDefaultBook, getTag, getTaskTags, getTemplates } from '@/db/queries';
 import { sql } from 'drizzle-orm';
+import { BookPromo } from '../../../components/BookPromo';
 import { TemplateCard } from '../../../components/TemplateCard';
 import { VideoCard } from '../../../components/VideoCard';
 
@@ -26,9 +27,10 @@ export default async function TagPage({ params }: { params: Promise<{ tag: strin
   const { tag: slug } = await params;
   const tag = await getTag(slug);
   if (!tag) notFound();
-  const [templates, tags, videos] = await Promise.all([
+  const [templates, tags, book, videos] = await Promise.all([
     getTemplates(slug),
     getTaskTags(),
+    getDefaultBook(),
     db.select({ id: t.videos.id, videoNo: t.videos.videoNo, title: t.videos.title, thumbnailUrl: t.videos.thumbnailUrl })
       .from(t.videos)
       .where(sql`${t.videos.status} = 'public'
@@ -49,6 +51,7 @@ export default async function TagPage({ params }: { params: Promise<{ tag: strin
           {templates.map((x) => <TemplateCard key={x.slug} t={x} />)}
         </div>
       )}
+      {book && <BookPromo book={book} />}
       {videos.length > 0 && (
         <section className="sect" aria-label="관련 영상">
           <h2>영상</h2>
