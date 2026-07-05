@@ -1,6 +1,5 @@
 // 핵심 테이블 → JSON 파일 내보내기 (야간 스냅샷의 LLM/파일 친화 사본, cho-ai-data에 커밋됨)
 // 사용: tsx scripts/export-json.ts <출력디렉터리>
-import 'dotenv/config';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { sql } from '../src/db/client';

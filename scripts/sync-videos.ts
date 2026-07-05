@@ -4,8 +4,7 @@
 //  - 신규 영상은 트랜잭션 안에서 max(video_no)+1 부터 게시일 순으로 부여.
 //  - 영상마다 short_links 3행: {no}(other), {no}d(description), {no}c(comment) → /videos/{videoId}
 //  - API 응답에서 사라진 영상은 삭제/비공개 구분이 불가(공개 데이터 API 한계) → 상태를 임의로 바꾸지 않고 경고만 출력.
-import 'dotenv/config';
-import { asc, sql as dsql } from 'drizzle-orm';
+import { sql as dsql } from 'drizzle-orm';
 import { db, sql } from '../src/db/client';
 import { videos, shortLinks } from '../src/db/schema';
 
