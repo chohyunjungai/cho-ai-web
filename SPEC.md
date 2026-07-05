@@ -272,7 +272,7 @@ CREATE INDEX idx_outbound_video_at ON outbound_clicks (video_id, clicked_at);
 - [ ] published 템플릿 전부: `copy_url`이 `/copy`로 끝나고 영상과 `video_templates`로 연결됨
 - [ ] cho-ai-templates에 템플릿별 폴더 + `.gs` 원본 + LICENSE + 저작자 고지 주석
 - [ ] cho-ai-data에 이틀 연속 자동 스냅샷 커밋 존재
-- [ ] 스냅샷 → 새 Neon 브랜치 복원 1회 성공, 절차 문서화됨
+- [x] 스냅샷 → 별도 DB 복원 1회 성공 (14개 테이블 행 수 일치, 2026-07-06), 절차 문서화(docs/restore.md)
 - [ ] 영상 70개 제목 → 태그 매핑 표 검증 완료, 태그 어휘 최종 확정
 
 ### 1단계 — MVP 사이트
