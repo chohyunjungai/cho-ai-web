@@ -280,12 +280,12 @@ CREATE INDEX idx_outbound_video_at ON outbound_clicks (video_id, clicked_at);
 작업: 홈·영상/템플릿 갤러리·상세·태그·about (전부 ISR), 검색·필터(FTS + pg_trgm), 짧은 링크 라우트 + clicks 로깅, Vercel 배포 + cho-ai.com 연결, 신규 영상부터 설명란에 짧은 링크.
 
 **완료 판정**:
-- [ ] `cho-ai.com/123d` 접속 → 302 → 영상 상세 도착, `clicks`에 1행 기록됨
-- [ ] DB 연결을 끊은 프리뷰 환경에서도 리다이렉트가 성공한다 (fail-open 검증)
-- [ ] 방문자 페이지 전부 정적 서빙 (헤더/빌드 출력으로 확인)
-- [ ] 검색어·태그 필터로 템플릿 도달 가능
-- [ ] www.cho-ai.com → cho-ai.com 301
-- [ ] 신규 영상 1개 이상의 설명란에 짧은 링크 게시됨
+- [x] `cho-ai.com/18d` → 302 → 영상 상세, `clicks` 기록 (2026-07-06 프로덕션 실측 — 실브라우저 UA 포함)
+- [ ] DB 연결을 끊은 프리뷰 환경에서도 리다이렉트가 성공한다 (fail-open — 코드는 try/catch+홈 폴백으로 보장, 프리뷰 실측 남음)
+- [x] 방문자 페이지 전부 정적 서빙 (x-vercel-cache: HIT 확인, 정적 136페이지)
+- [x] 검색어·태그 필터로 템플릿 도달 가능 (/search?q=댓글 200)
+- [x] www.cho-ai.com → cho-ai.com 308 영구 리다이렉트
+- [ ] 신규 영상 1개 이상의 설명란에 짧은 링크 게시됨 (소유자)
 
 ### 2단계 — 블로그 + 보조 측정
 
