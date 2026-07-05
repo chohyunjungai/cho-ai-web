@@ -11,7 +11,7 @@ const SECURITY_HEADERS = [
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      "img-src 'self' https://i.ytimg.com data:",
+      "img-src 'self' https://i.ytimg.com https://image.yes24.com data:", // yes24 = books.cover_url 호스트 (책 표지)
       "style-src 'self' 'unsafe-inline'",
       "script-src 'self' 'unsafe-inline'",
       "frame-ancestors 'none'",
