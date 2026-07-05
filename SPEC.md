@@ -266,7 +266,7 @@ CREATE INDEX idx_outbound_video_at ON outbound_clicks (video_id, clicked_at);
 
 **완료 판정**:
 - [ ] §2 스키마 전체가 Drizzle 마이그레이션 파일로 존재하고 Neon main에 적용됨
-- [ ] `SELECT count(*) FROM tags` = 20 (task 8 + tech 12, 실데이터 검증 반영분 포함)
+- [ ] `SELECT count(*) FROM tags` = 21 (task 9 + tech 12, 실데이터 검증 반영분 포함 시 증감 가능)
 - [ ] `SELECT count(*) FROM videos` ≥ 70, `video_no` 1부터 연속 부여, 게시일 오름차순과 일치
 - [ ] published 템플릿 전부: `copy_url`이 `/copy`로 끝나고 영상과 `video_templates`로 연결됨
 - [ ] cho-ai-templates에 템플릿별 폴더 + `.gs` 원본 + LICENSE + 저작자 고지 주석

@@ -6,40 +6,36 @@
 
 Shorts 포함으로 확정. 일반 영상과 동일하게 video_no를 소비하며, `videos.is_short`로 구분한다 (SPEC.md §2 반영 완료). T4 시딩 차단 해제.
 
-## T1. 저장소 3개 생성
+## T1. ✅ 완료 (2026-07-05) — 저장소 3개 생성
 
-- 선행 조건: 없음
-- 소유자 입력: 개인(비학교) 깃허브 계정명 확인
-- 작업: `cho-ai-web`(공개) · `cho-ai-templates`(공개) · `cho-ai-data`(**private**) 생성. cho-ai-web에 이 문서 체계(SPEC/CLAUDE/TASKS/REVIEW/OPEN-QUESTIONS + .claude/) 이관. 템플릿 저장소에 LICENSE(MIT + CC BY 4.0 이중 고지) 추가.
-- 완료 판정: 3개 저장소 존재, cho-ai-data가 private, cho-ai-web 첫 커밋에 문서 체계 포함
+`chohyunjungai` 계정(채널 동일 계정)에 생성·푸시 완료:
+[cho-ai-web](https://github.com/chohyunjungai/cho-ai-web)(공개, 문서 체계 + .claude/ 이관) · [cho-ai-templates](https://github.com/chohyunjungai/cho-ai-templates)(공개, MIT+CC BY 4.0 LICENSE) · [cho-ai-data](https://github.com/chohyunjungai/cho-ai-data)(**private**, 스냅샷 워크플로 포함). **이후 문서의 원본은 cho-ai-web 저장소다.**
 
-## T2. Neon 프로젝트 + Drizzle 마이그레이션
+## T2. ✅ 완료 (2026-07-05) — Neon + Drizzle 마이그레이션
 
-- 선행 조건: T1 (마이그레이션 파일을 커밋할 곳)
-- 소유자 입력: Neon 가입 계정 (구글 로그인이면 어떤 계정인지). 생성된 DATABASE_URL은 환경변수로만 — 커밋 금지
-- 작업: Neon 프로젝트 생성 → Next.js 프로젝트 스캐폴드 → SPEC.md §2 스키마 전체를 Drizzle로 작성 → 마이그레이션 생성·적용 (clicks_human 뷰, 인덱스 포함)
-- 완료 판정: Neon main에서 `\dt` 결과가 §2와 일치, 마이그레이션 파일이 cho-ai-web에 커밋됨
+Neon(PG 18.4)에 마이그레이션 적용 완료 — 테이블 14개 + CHECK 7 + clicks_human 뷰, `\dt` 일치 확인.
 
-## T3. 태그 시딩 (초안)
+## T3. ✅ 완료 (2026-07-05) — 태그 시딩
 
-- 선행 조건: T2
-- 소유자 입력: 없음 (SPEC.md §4 초안 사용)
-- 작업: 태그 20개(task 8 + tech 12) 시딩 스크립트 작성·실행
-- 완료 판정: `SELECT count(*) FROM tags` = 20, category 분포 8/12
+21개 시딩 (task 9 / tech 12). 최종 어휘는 T9 검증 결과 반영 후 확정.
 
-## T4. 영상 동기화 + video_no 부여
+## T4. ✅ 완료 (2026-07-05) — 영상 시딩·번호 확정
 
-- 선행 조건: T2
-- 소유자 입력: ① YouTube Data API 키 (Google Cloud 콘솔에서 발급 — 읽기용, OAuth 불필요) ② 채널 ID
-- 작업: 동기화 스크립트(YouTube API → videos upsert, **Shorts 포함** + `is_short` 판별·저장) → 최초 시딩 실행 → 게시일 오름차순으로 video_no 부여(가장 오래된 영상 = 1, Shorts도 동일 연번) → short_links에 영상별 `{no}`/`{no}d`/`{no}c` 행 생성
+**videos 84행, video_no 1~84 영구 확정** (게시일 오름차순, Shorts 21편 포함, short_links 252행, verify-db 9항목 전체 통과). 소유자가 비공개 영상 정리 후 재시딩을 거쳐 확정함 — 이후 재시딩 금지 (truncate 스크립트는 RESEED_CONFIRM 가드).
+
+<details><summary>원래 계획 (참고)</summary>
+
+- ✅ `scripts/sync-videos.ts`: 업로드 재생목록 전체 수집 → upsert(기존 행의 video_no·status 불변) → 신규만 게시일 오름차순 연번 부여(트랜잭션) → short_links 3행 생성 → Shorts 판별(≤3분 + /shorts/ URL 프로브) → API에서 사라진 영상은 자동 변경 없이 경고만
+- ⏳ 소유자 입력: ① **YouTube Data API 키** (Google Cloud 콘솔 → YouTube Data API v3 활성화 → API 키, OAuth 불필요) ② **채널 핸들(@...) 또는 UC 채널 ID**
+- 남은 작업: 최초 시딩 실행 + sync-verifier 검증
 - 완료 판정: videos ≥ 70행(Shorts 포함), video_no 1부터 연속·게시일 순서와 일치, Shorts 영상에 is_short=true, short_links = 영상 수 × 3, sync-verifier 통과
 
-## T5. GitHub Actions 크론 2종
+</details>
 
-- 선행 조건: T4 (동기화), T2 (스냅샷)
-- 소유자 입력: 저장소 시크릿 등록 (DATABASE_URL, YOUTUBE_API_KEY — 값 전달은 화면 공유·파일 아닌 GitHub Secrets 직접 입력 권장)
-- 작업: ① 매일 영상 동기화 워크플로 (workflow_dispatch 수동 트리거 포함) ② 야간 pg_dump + 핵심 테이블 JSON/CSV → cho-ai-data 커밋 워크플로
-- 완료 판정: 두 워크플로 각 1회 수동 실행 성공 + cho-ai-data에 이틀 연속 자동 스냅샷 커밋
+## T5. GitHub Actions 크론 2종 — 수동 실행 2종 성공 ✅, 이틀 연속 자동만 대기
+
+- ✅ 시크릿·변수 등록 완료, sync-videos 수동 실행 성공, snapshot 수동 실행 성공(`snapshot 2026-07-05` 커밋: dump.sql + JSON 14개 — pg_dump 18 버전 불일치 2회 수정 거침)
+- 남은 판정: cho-ai-data에 **이틀 연속 자동** 스냅샷 커밋 (2026-07-07 확인)
 
 ## T6. 템플릿 시딩
 
