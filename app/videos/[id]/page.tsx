@@ -88,16 +88,18 @@ export default async function VideoDetail({ params }: { params: Promise<{ id: st
 
 function PromoBlock({ books, promo, videoId }: {
   books: { isbn: string; title: string; coverUrl: string | null; note: string | null }[];
-  promo: { kind: string; title: string; tagline: string | null; imagePath: string | null; targetUrl: string | null } | null;
+  promo: { kind: string; title: string; tagline: string | null; imagePath: string | null; targetUrl: string | null; isbn: string | null } | null;
   videoId: string;
 }) {
-  const book = books[0];
+  // video_books 직접 연결이 우선, 없으면 기본 프로모(책이면 서점 버튼 동일 렌더)
+  const book = books[0]
+    ?? (promo?.isbn ? { isbn: promo.isbn, title: promo.title, coverUrl: promo.imagePath, note: promo.tagline } : null);
   if (book) {
     return (
       <div className="promo">
         <div className="cover">{book.coverUrl ? <img src={book.coverUrl} alt={book.title} /> : book.title}</div>
         <div>
-          <p className="eyebrow">이 채널을 만든 사람의 책</p>
+          <p className="eyebrow">이 채널을 만든 사람의 책 · {book.title}</p>
           <p className="copy">{book.note ?? book.title}</p>
           <div className="pstores">
             {(['kyobo', 'yes24', 'aladin'] as const).map((s) => (
@@ -115,7 +117,7 @@ function PromoBlock({ books, promo, videoId }: {
       <div className="promo">
         <div className="cover">{promo.imagePath ? <img src={promo.imagePath} alt={promo.title} /> : promo.title}</div>
         <div>
-          <p className="eyebrow">{promo.kind === 'book' ? '이 채널을 만든 사람의 책' : '조현정의AI실험실'}</p>
+          <p className="eyebrow">조현정의AI실험실</p>
           <p className="copy">{promo.tagline ?? promo.title}</p>
           {promo.targetUrl && (
             <div className="pstores">
