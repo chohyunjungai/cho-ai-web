@@ -108,6 +108,13 @@ src/db/  schema.ts(원본=SPEC §2) app.ts(neon-http, 페이지용) client.ts(po
 - CSS: `.pv img { object-fit: cover; object-position: center top }` — 세로 긴 문서가 4:3 카드에서 상단부터 보이게
 - **운영 원칙: 시트의 첫 탭이 곧 상품 사진** — 새 템플릿은 첫 탭을 안내 페이지로 꾸민다
 
+### 2-8. 슉슉이 에셋 (2026-07-06)
+
+- 원본: `~/Documents/코딩/260705 cho-ai.com개발/슉슉이10개.png` (2560×1440, 2행×5열) → `public/shukshuk/{1..10}.webp` (투명 배경, 최대변 256px, 전부 ≤ 30KB — DESIGN §2-1·§6)
+- 추출: sharp로 셀 크롭 후 **테두리에서 near-white flood fill**로 배경 제거 (몸통 안 흰 셀은 잉크 외곽선에 막혀 보존). ⚠️ 포즈 6(망토 질주)의 망토·바람선이 셀 경계를 넘음 — 6·7 경계를 x=620으로 옮겨야 망토 흰 부분이 배경으로 오인되지 않음
+- 사용: `components/Shuk.tsx` (`<Shuk pose={n} size={96}>`) + `.shuk` CSS(다크에서 라이트 아웃라인 drop-shadow). 배치: 사본 안내 바텀시트 ②, 404 ③, 검색 0건 ⑦, 템플릿 없는 영상 ⑦
+- ⚠️ **라우트 핸들러의 `notFound()`는 빈 404 바디** — React not-found 페이지는 페이지/서버컴포넌트에서만 렌더됨. `[code]/route.ts`는 인라인 HTML 404(슉슉이 ③)를 직접 반환
+
 ## 3. 배포 (Vercel + 가비아 DNS)
 
 1. Vercel 대시보드 → Import chohyunjungai/cho-ai-web → env `DATABASE_URL`만 (YouTube 키 불필요 — 동기화는 Actions) → Deploy
@@ -132,6 +139,7 @@ src/db/  schema.ts(원본=SPEC §2) app.ts(neon-http, 페이지용) client.ts(po
 8. `cd`가 포함된 복합 명령은 권한 프롬프트 유발 — `git -C <path>` 사용
 9. compound FK·CHECK는 drizzle에서 테이블 3번째 인자 배열로; 뷰·확장은 `drizzle-kit generate --custom`
 10. 파비콘 캐시는 끈질김 — 확인은 시크릿 창
+11. **CSP `img-src`는 화이트리스트** (next.config.ts) — 외부 이미지 호스트를 새로 쓰면(책 표지 등) 반드시 추가할 것. 누락 시 curl은 200인데 브라우저에서만 전 화면 이미지가 깨진다 (2026-07-06 yes24 표지 사고: 보안헤더 배포 직후 발생, cdd186b로 복구). 현재 허용: self · i.ytimg.com · image.yes24.com. 새 책 표지는 가급적 public/에 자체 호스팅이 안전
 
 ## 5. 오늘 결정된 정책 변경 (문서 반영 완료)
 

@@ -28,6 +28,7 @@
 - **위치**: `next.config.ts` — `headers()` 부재
 - **내용**: CSP/HSTS/X-Frame-Options/X-Content-Type-Options/Referrer-Policy/Permissions-Policy 부재 → 클릭재킹, MIME 스니핑, HTTPS 다운그레이드, 리퍼러 유출.
 - **조치**: `next.config.ts`에 전역 보안 헤더 추가.
+- ⚠️ **부작용 이력 (2026-07-06)**: CSP `img-src` 화이트리스트에 책 표지 호스트(image.yes24.com)가 누락돼 배포 직후 전 화면 책 배너 이미지 깨짐 → cdd186b로 추가 복구. **외부 이미지 호스트를 새로 쓰는 모든 작업은 CSP img-src 갱신 필수** (curl로는 200이라 서버 점검으로 안 잡힘 — 브라우저에서 확인).
 
 ### M-2. 클릭 기록 무제한 쓰기 = 비용/오염 증폭 — [상태: 패치됨 (Vercel+Upstash)]
 - **위치**: `app/[code]/route.ts`, `app/out/[store]/[isbn]/route.ts`, `app/search/page.tsx`, `src/rate-limit.ts`
