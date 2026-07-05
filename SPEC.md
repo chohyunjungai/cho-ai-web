@@ -246,6 +246,7 @@ CREATE INDEX idx_outbound_video_at ON outbound_clicks (video_id, clicked_at);
 4. 클릭 INSERT는 Neon serverless HTTP 드라이버 사용 (커넥션 풀 부담 없음).
 5. 봇은 기록 시 차단하지 않고 전부 기록, 집계는 `clicks_human` 뷰로 — 원시 데이터 보존이 데이터 소유권 전제에 부합.
 6. `/out/{store}/{isbn}?v={videoId}`도 동일 원칙 (기록 후 302, fail-open).
+7. **갤러리 노출 규칙 (2026-07-05 확정)**: 홈·영상 갤러리에는 자료(템플릿·강의안) 연결이 있는 영상만 노출한다. 자료 없는 영상의 상세 페이지도 존재하지만(짧은 링크는 영원하다) 탐색 동선에는 나타나지 않는다. 한 영상에 자료 여러 개 연결 가능(video_templates N:M).
 
 ## 6. 크론·백업
 
