@@ -44,8 +44,11 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+    'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
   font-size: 14px;
   line-height: 20px;
+  -webkit-font-smoothing: antialiased;
 }
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; }
@@ -181,6 +184,32 @@ h1, h2, h3, p { margin: 0; }
 .prose h1 { font-size: 22px; line-height: 30px; margin: 16px 0 8px; }
 .prose h2 { font-size: 18px; margin: 20px 0 8px; }
 .prose p { margin: 8px 0; }
+
+/* ── 소개 페이지 (에세이형 — 여백·조판이 디자인의 전부, 박스·배경색 금지) */
+.about { max-width: 640px; margin: 0 auto; padding: 48px 20px 24px; }
+.about a { color: var(--link); }
+.about-hd { display: flex; gap: 20px; align-items: center; margin-bottom: 40px; }
+.about-photo { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; flex: none; }
+.about h1 { font-size: 26px; line-height: 34px; font-weight: 700; letter-spacing: -0.3px; }
+.about .lead { font-size: 15px; line-height: 24px; color: var(--text-secondary); margin-top: 6px; }
+.about h2 { font-size: 13px; font-weight: 700; color: var(--text-secondary); letter-spacing: 0.5px; margin: 56px 0 18px; }
+.about-body { font-family: var(--font-serif), 'Noto Serif KR', serif; font-size: 16.5px; line-height: 1.9; letter-spacing: -0.1px; }
+.about-body p { margin: 0 0 1.15em; }
+.about-body p:last-child { margin-bottom: 0; }
+.about hr { border: 0; border-top: 1px solid var(--border); margin: 56px 0 0; }
+.about .bio { list-style: none; padding: 0; margin: 0; font-size: 15px; line-height: 30px; }
+.about .links { list-style: none; padding: 0; margin: 0; font-size: 15px; line-height: 32px; }
+.about .links b { font-weight: 500; color: var(--text-secondary); display: inline-block; min-width: 72px; }
+.about .promo { margin: 24px 0 0; }
+@media (min-width: 600px) {
+  .about { padding-top: 64px; }
+  .about-photo { width: 96px; height: 96px; }
+  .about h1 { font-size: 30px; line-height: 40px; }
+  .about-body { font-size: 17.5px; }
+}
+@media (max-width: 480px) {
+  .about-hd { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
 
 /* ── 바텀시트 (권한 안내 — 무안내 원칙의 유일한 예외) */
 .sheet-dim { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 50; }

@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
-import { Roboto, Noto_Sans_KR } from 'next/font/google';
+import { Noto_Serif_KR } from 'next/font/google';
 import Link from 'next/link';
 import { Header } from '../components/Header';
+import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import './globals.css';
 
-const roboto = Roboto({ weight: ['400', '500', '700'], subsets: ['latin'], display: 'swap' });
-const noto = Noto_Sans_KR({ weight: ['400', '500', '700'], subsets: ['latin'], display: 'swap' });
+// 본문은 Pretendard(위 CSS, globals.css body에서 지정), 세리프는 /about 에세이 전용
+const serif = Noto_Serif_KR({ weight: ['400', '600', '700'], subsets: ['latin'], display: 'swap', variable: '--font-serif' });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cho-ai.com'),
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" className={`${roboto.className} ${noto.className}`}>
+    <html lang="ko" className={serif.variable}>
       <body>
         <Header />
         <main className="container">{children}</main>
