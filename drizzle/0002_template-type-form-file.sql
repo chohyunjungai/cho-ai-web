@@ -1,0 +1,2 @@
+ALTER TABLE "templates" DROP CONSTRAINT "templates_type_check";--> statement-breakpoint
+ALTER TABLE "templates" ADD CONSTRAINT "templates_type_check" CHECK ("templates"."type" IN ('sheet','doc','form','file'));

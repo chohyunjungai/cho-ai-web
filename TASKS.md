@@ -39,11 +39,9 @@ Neon(PG 18.4)에 마이그레이션 적용 완료 — 테이블 14개 + CHECK 7 
 
 ## T6. 템플릿 시딩
 
-- 선행 조건: T4 ✅
-- ✅ 사전 조사 완료 (2026-07-05): 설명란·블로그(15개 글 크롤)·고정댓글·단축링크(link.cho-ai.com 로그인 래퍼 해석 포함) 전수 조사 → **docs/template-inventory.md** — 자료 확인 영상 23편, 고유 자료 26개(시트 15·문서 7·폼 3·드라이브 1), 공유 자료 7개. 정리 시트 불필요해짐
-- ⏳ 소유자 입력: ① 목록 검토(빠진 자료·오탐·자료별 공식 제목) ② **템플릿별 미리보기 스크린샷** (스토어 카드용, 없으면 시딩 때 캡처 절차로 제작 — 1280×960)
-- 작업: 시트 → 변환 스크립트 → templates·video_templates 일괄 INSERT (copy_url 자동 변환 포함). 누락 설명은 content-writer 초안 → 소유자 검수. 전 템플릿 "뷰어+링크 공유" 설정 일괄 점검(소유자가 확인).
-- 완료 판정: published 템플릿 전부 copy_url이 /copy로 끝나고 영상과 연결됨, 실제 사본 만들기 1회 성공 확인
+- ✅ 시딩 완료 (2026-07-05): 전수 조사(docs/template-inventory.md — 설명란·블로그 크롤·고정댓글·단축링크 4경로) → **templates 24개** (시트 15·문서 7·폼 1·파일 1, 실제 구글 파일 제목 기반, 참여용 폼 2건 오탐 제외) · video_templates 33행 · template_tags 70행(연결 영상 태그 상속). type CHECK를 ('sheet','doc','form','file')로 확장(마이그레이션 0002). verify-db 통과. 향후 자료는 template-registration 절차로 추가
+- ⏳ 남은 소유자 확인: ① draft 2건 공유 설정 (automation-school-10-extra, comment-collector-code — 제목 조회가 실패해 링크 공유가 안 돼 있을 가능성) ② 목록에 빠진 자료·제목 교정 ③ 미리보기 스크린샷 (1280×960) ④ 실제 사본 만들기 1회 실측
+- 완료 판정: published 템플릿 전부 copy_url이 /copy(파일 제외)·영상 연결 ✅ / 사본 만들기 1회 성공 확인 ⏳
 
 ## T7. cho-ai-templates + clasp
 

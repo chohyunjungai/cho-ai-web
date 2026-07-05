@@ -66,7 +66,7 @@ CREATE TABLE videos (
 CREATE TABLE templates (
   slug          text PRIMARY KEY,           -- 불변 ID (kebab-case)
   title         text NOT NULL,
-  type          text NOT NULL CHECK (type IN ('sheet','doc')),
+  type          text NOT NULL CHECK (type IN ('sheet','doc','form','file')),  -- 2026-07-05 확장: 폼·파일 자료 실존
   status        text NOT NULL CHECK (status IN ('draft','published','deprecated')),
   copy_url      text NOT NULL,              -- 구글 "사본 만들기" 링크 (/copy)
   github_path   text,                       -- cho-ai-templates/{slug}

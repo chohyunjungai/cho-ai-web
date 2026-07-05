@@ -31,8 +31,8 @@ const checks: [string, string, (r: any[]) => boolean][] = [
     `SELECT count(*)::int AS n FROM templates t WHERE t.status='published'
        AND NOT EXISTS (SELECT 1 FROM video_templates v WHERE v.template_slug=t.slug)`,
     (r) => r[0].n === 0],
-  ['copy_url 전부 /copy로 끝남',
-    `SELECT count(*)::int AS bad FROM templates WHERE copy_url NOT LIKE '%/copy'`,
+  ['copy_url 규칙: file 제외 전부 /copy로 끝남',
+    `SELECT count(*)::int AS bad FROM templates WHERE type <> 'file' AND copy_url NOT LIKE '%/copy'`,
     (r) => r[0].bad === 0],
   ['clicks_human 뷰 존재',
     `SELECT count(*)::int AS n FROM information_schema.views WHERE table_name='clicks_human'`,

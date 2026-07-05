@@ -37,7 +37,7 @@ export const templates = pgTable('templates', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 }, (t) => [
-  check('templates_type_check', sql`${t.type} IN ('sheet','doc')`),
+  check('templates_type_check', sql`${t.type} IN ('sheet','doc','form','file')`),  // 2026-07-05 실데이터: 폼·파일 자료 존재
   check('templates_status_check', sql`${t.status} IN ('draft','published','deprecated')`),
 ]);
 
