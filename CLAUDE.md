@@ -21,3 +21,4 @@
 - 클릭 집계는 `clicks` 원본이 아니라 `clicks_human` 뷰 기준.
 - 슬러그·파일명은 kebab-case 소문자.
 - 미정 사항은 [OPEN-QUESTIONS.md](OPEN-QUESTIONS.md) 확인 — 임의로 확정하지 않는다.
+- **새 세션은 [NEXT.md](NEXT.md)에서 시작** — 잔여 마감·백로그·착수 순서. 구축 이력·함정은 [docs/BUILD-LOG.md](docs/BUILD-LOG.md).
