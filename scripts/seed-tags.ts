@@ -3,16 +3,18 @@
 import { db, sql } from '../src/db/client';
 import { tags } from '../src/db/schema';
 
+// 2026-07-05 실데이터 검증(84편) 후 확정: ai-tools·automation·school 추가, grading·classroom 제거
 const TASK = [
   ['유튜브 운영', 'youtube'],
-  ['문자·알림', 'sms-alert'],
-  ['설문·폼', 'survey'],
-  ['성적·평가', 'grading'],
-  ['학급·학사', 'classroom'],
-  ['일정·시간표', 'schedule'],
+  ['AI 도구·활용', 'ai-tools'],
+  ['업무자동화', 'automation'],
   ['자료취합·문서', 'admin'],
-  ['데이터 분석', 'data'],
+  ['설문·폼', 'survey'],
+  ['문자·알림', 'sms-alert'],
   ['AI 학습', 'ai-study'],
+  ['데이터 분석', 'data'],
+  ['일정·시간표', 'schedule'],
+  ['학교·교사', 'school'],
 ] as const;
 
 const TECH = [

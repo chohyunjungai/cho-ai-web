@@ -3,9 +3,16 @@ import { sql } from '../src/db/client';
 
 const checks: [string, string, (r: any[]) => boolean][] = [
   ['videos 행 수', `SELECT count(*)::int AS n FROM videos`, (r) => r[0].n >= 70],
-  ['tags 21개 (task 9 / tech 12)',
+  ['tags 22개 (task 10 / tech 12, 2026-07-05 확정)',
     `SELECT category, count(*)::int AS n FROM tags GROUP BY category ORDER BY category`,
-    (r) => r.length === 2 && r[0].n === 9 && r[1].n === 12],
+    (r) => r.length === 2 && r[0].n === 10 && r[1].n === 12],
+  ['태그 개수 규칙: 콘텐츠당 task ≤ 2, tech ≤ 3',
+    `SELECT count(*)::int AS bad FROM (
+       SELECT vt.video_id FROM video_tags vt JOIN tags t ON t.id = vt.tag_id
+       GROUP BY vt.video_id
+       HAVING count(*) FILTER (WHERE t.category='task') > 2
+           OR count(*) FILTER (WHERE t.category='tech') > 3) x`,
+    (r) => r[0].bad === 0],
   ['video_no: 1부터 연속(결번 없음)',
     `SELECT min(video_no)::int AS lo, max(video_no)::int AS hi, count(*)::int AS n FROM videos`,
     (r) => r[0].lo === 1 && r[0].hi === r[0].n],

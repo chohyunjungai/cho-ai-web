@@ -225,9 +225,9 @@ CREATE INDEX idx_outbound_video_at ON outbound_clicks (video_id, clicked_at);
 
 ## 4. 태그 어휘와 운영 규칙
 
-시딩 초안 (0단계에서 영상 70개 제목 매핑으로 검증 후 최종 확정 — 어느 태그에도 안 들어가는 영상 3개 이상이면 태그 추가, 콘텐츠 0~1개 태그는 제거). 초안은 §0 사용자층 4그룹을 모두 커버해야 한다 — 교사 전용 어휘로 쏠리지 않는다:
+**확정본 (2026-07-05, 영상 84편 전수 매핑 검증 완료 — cho-ai-web/docs/tag-mapping.md)**. 검증 규칙(미분류 3개↑ → 추가, 0~1개 태그 → 제거)에 따라 초안에서 ai-tools·automation·school 추가, grading·classroom 제거:
 
-**업무 축 (category='task', 주 필터, 8~10개 유지)**: 유튜브 운영(youtube — 채널 분석·댓글 관리·업로드 자동화), 문자·알림(sms-alert), 설문·폼(survey — 신청 접수·취합), 성적·평가(grading), 학급·학사(classroom — 출결·명단·자리배치·가정통신), 일정·시간표(schedule — 캘린더 연동), 자료취합·문서(admin — 파일 취합·문서 자동화·반복 사무), 데이터 분석(data — 집계·대시보드), AI 학습(ai-study — AI 공부법·학습 루틴)
+**업무 축 (category='task', 주 필터, 10개)**: 유튜브 운영(youtube — 채널 분석·댓글·수집, 19편), AI 도구·활용(ai-tools — AI 서비스 리뷰·팁·소식, 16편), 업무자동화(automation — AI자동화학교·바이브코딩 시리즈, 9편), 자료취합·문서(admin — 파일·메일·문서 자동화, 11편), 설문·폼(survey, 10편), 문자·알림(sms-alert, 6편), AI 학습(ai-study — 공부법·학습 도구, 3편), 데이터 분석(data, 3편), 일정·시간표(schedule, 2편), 학교·교사(school — 교사 행정, 2편). 일상·기타 쇼츠는 업무 태그 0개 허용(5편).
 
 **기술 축 (category='tech', 보조 필터, 12개 이내)**: 앱스스크립트(apps-script), 트리거·자동실행(trigger), 시트함수(formulas), QUERY(query), 정규식(regex), 웹앱(web-app), 구글폼 연동(forms), Gmail 연동(gmail), 캘린더 연동(calendar), 외부 API(external-api), 구글문서(docs), AI 활용(ai)
 
@@ -266,7 +266,7 @@ CREATE INDEX idx_outbound_video_at ON outbound_clicks (video_id, clicked_at);
 
 **완료 판정**:
 - [ ] §2 스키마 전체가 Drizzle 마이그레이션 파일로 존재하고 Neon main에 적용됨
-- [ ] `SELECT count(*) FROM tags` = 21 (task 9 + tech 12, 실데이터 검증 반영분 포함 시 증감 가능)
+- [x] `SELECT count(*) FROM tags` = 22 (task 10 + tech 12 — 2026-07-05 실데이터 검증 후 확정)
 - [ ] `SELECT count(*) FROM videos` ≥ 70, `video_no` 1부터 연속 부여, 게시일 오름차순과 일치
 - [ ] published 템플릿 전부: `copy_url`이 `/copy`로 끝나고 영상과 `video_templates`로 연결됨
 - [ ] cho-ai-templates에 템플릿별 폴더 + `.gs` 원본 + LICENSE + 저작자 고지 주석
