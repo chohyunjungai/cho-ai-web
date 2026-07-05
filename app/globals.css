@@ -178,6 +178,11 @@ h1, h2, h3, p { margin: 0; }
 .foot-links a:hover { color: var(--link); }
 .foot-legal { font-size: 12px; color: var(--text-secondary); }
 .empty { text-align: center; padding: 48px 16px; color: var(--text-secondary); }
+.shuk { display: block; margin: 0 auto 12px; }
+@media (prefers-color-scheme: dark) {
+  /* 잉크 외곽선이 다크 배경에 묻히지 않게 은은한 라이트 아웃라인 (DESIGN §2-1) */
+  .shuk { filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.35)); }
+}
 .searchbox { display: flex; gap: 8px; padding: 12px 16px; }
 .searchbox input { flex: 1; height: 40px; border: 1px solid var(--border); border-radius: 20px; padding: 0 16px; font-size: 16px; background: var(--bg); color: var(--text); font-family: inherit; }
 .prose { max-width: 680px; font-size: 16px; line-height: 28px; padding: 16px; }

@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getVideoByNo, search } from '@/db/queries';
 import { allowSearch, clientIp } from '@/rate-limit';
+import { Shuk } from '../../components/Shuk';
 import { TemplateCard } from '../../components/TemplateCard';
 import { VideoCard } from '../../components/VideoCard';
 
@@ -52,6 +53,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           )}
           {result.templates.length === 0 && result.videos.length === 0 && (
             <div className="empty">
+              <Shuk pose={7} size={96} />
               <p style={{ fontWeight: 700, marginBottom: 6 }}>음… &lsquo;{q}&rsquo;는 못 찾았어요</p>
               <p>다른 단어로 검색해 보시거나, 홈의 분류 칩에서 골라보세요.</p>
             </div>

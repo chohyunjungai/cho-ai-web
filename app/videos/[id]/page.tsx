@@ -8,6 +8,7 @@ import { getVideo } from '@/db/queries';
 import { BookPromo, type Book as BookType } from '../../../components/BookPromo';
 import { ContextLabel } from '../../../components/ContextLabel';
 import { CopyButton } from '../../../components/CopyButton';
+import { Shuk } from '../../../components/Shuk';
 import { Preview, TemplateCard } from '../../../components/TemplateCard';
 
 export const revalidate = 3600;
@@ -62,6 +63,7 @@ export default async function VideoDetail({ params }: { params: Promise<{ id: st
           ))
         ) : (
           <div className="empty">
+            <Shuk pose={7} size={96} />
             <p>이 영상은 보는 것만으로 완성! 대신 이런 자료는 어때요?</p>
           </div>
         )}
