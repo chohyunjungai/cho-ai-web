@@ -1,0 +1,27 @@
+{
+  "name": "cho-ai-web",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "cho-ai.com — 유튜브 영상·템플릿 연결 배포 사이트 (조현정의AI실험실)",
+  "license": "MIT",
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "seed:tags": "tsx scripts/seed-tags.ts",
+    "sync:videos": "tsx scripts/sync-videos.ts",
+    "export:json": "tsx scripts/export-json.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.44.0",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "drizzle-kit": "^0.31.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
