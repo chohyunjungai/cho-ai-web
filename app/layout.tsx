@@ -20,10 +20,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main className="container">{children}</main>
         <footer className="pagefoot container">
-          <span>© 조현정 (조현정의AI실험실) — Google과 무관한 개인 사이트</span>
-          <span>코드 MIT · 콘텐츠 CC BY 4.0</span>
-          <a href="https://www.youtube.com/channel/UCiBi0s6g_Uk3k8yhCmkH5xw" target="_blank" rel="noopener">유튜브 채널 ↗</a>
-          <Link href="/about">소개</Link>
+          <div className="foot-links">
+            <Link href="/about">소개</Link>
+            <a href="https://www.youtube.com/channel/UCiBi0s6g_Uk3k8yhCmkH5xw" target="_blank" rel="noopener">유튜브 채널 ↗</a>
+            <a href="https://github.com/chohyunjungai/cho-ai-templates" target="_blank" rel="noopener">GitHub ↗</a>
+            <a href="mailto:creator@cho-ai.com">creator@cho-ai.com</a>
+          </div>
+          <div className="foot-legal">© 2026 조현정의AI실험실 · 코드 MIT · 콘텐츠 CC BY 4.0 (출처 표기 후 자유 이용)</div>
         </footer>
       </body>
     </html>

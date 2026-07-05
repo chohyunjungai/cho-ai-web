@@ -199,7 +199,7 @@ CREATE INDEX idx_outbound_video_at ON outbound_clicks (video_id, clicked_at);
 ## 3. URL 구조와 영구 불변 규칙
 
 ```
-/                      홈: 최신 영상 + 인기 템플릿(클릭 집계) + 최신 글
+/                      홈: 템플릿 매대(인기순) + 책 프로모 배너 + 최신 영상
 /123 , /123d , /123c   짧은 링크 → 클릭 기록(fail-open) 후 영상 상세로 302
 /videos                영상 갤러리 (검색·필터)
 /videos/{videoId}      영상 상세: 임베드 + 템플릿 카드 + 책 섹션 + 관련 글

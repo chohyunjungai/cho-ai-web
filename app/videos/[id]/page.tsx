@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { db, t } from '@/db/app';
 import { getVideo } from '@/db/queries';
+import { BookPromo, type Book as BookType } from '../../../components/BookPromo';
 import { ContextLabel } from '../../../components/ContextLabel';
 import { CopyButton } from '../../../components/CopyButton';
 import { Preview, TemplateCard } from '../../../components/TemplateCard';
@@ -87,34 +88,12 @@ export default async function VideoDetail({ params }: { params: Promise<{ id: st
 }
 
 function PromoBlock({ books, promo, videoId }: {
-  books: { isbn: string; title: string; subtitle: string | null; author: string | null; publisher: string | null; coverUrl: string | null; note: string | null }[];
+  books: BookType[];
   promo: { kind: string; title: string; tagline: string | null; imagePath: string | null; targetUrl: string | null } | null;
   videoId: string;
 }) {
   const book = books[0];
-  if (book) {
-    // 서점 스타일: 표지 원본 + 그림자, 제목·부제·카피·저자 (DESIGN §3-2b)
-    return (
-      <div className="promo">
-        <div className="cover">
-          {book.coverUrl ? <img src={book.coverUrl} alt={`${book.title} 표지`} /> : book.title}
-        </div>
-        <div>
-          <p className="b-title">{book.title}</p>
-          {book.subtitle && <p className="b-sub">{book.subtitle}</p>}
-          {book.note && <p className="b-copy">{book.note}</p>}
-          <p className="b-author">{[book.author && `${book.author} 저`, book.publisher].filter(Boolean).join(' | ')}</p>
-          <div className="pstores">
-            {(['kyobo', 'yes24', 'aladin'] as const).map((s) => (
-              <a key={s} className="pstore" href={`/out/${s}/${book.isbn}?v=${videoId}`} target="_blank" rel="noopener">
-                {s === 'kyobo' ? '교보문고' : s === 'yes24' ? '예스24' : '알라딘'}
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  if (book) return <BookPromo book={book} videoId={videoId} />;
   if (promo) {
     return (
       <div className="promo">

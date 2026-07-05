@@ -139,6 +139,19 @@ export async function getLatestVideos(limit = 6) {
     .limit(limit);
 }
 
+/** 기본 프로모 책 — 홈 배너용 (promos 활성 1순위가 가리키는 책) */
+export async function getDefaultBook() {
+  const [promo] = await db.select().from(t.promos)
+    .where(eq(t.promos.active, true)).orderBy(t.promos.sort).limit(1);
+  if (!promo?.isbn) return null;
+  const [book] = await db.select({
+    isbn: t.books.isbn, title: t.books.title, subtitle: t.books.subtitle,
+    author: t.books.author, publisher: t.books.publisher,
+    coverUrl: t.books.coverUrl, note: t.books.note,
+  }).from(t.books).where(eq(t.books.isbn, promo.isbn));
+  return book ?? null;
+}
+
 /** 영상 번호로 직접 조회 — 검색창에 '18'·'18d'처럼 번호를 치면 상세로 직행시키는 용도 */
 export async function getVideoByNo(no: number) {
   const [v] = await db.select({ id: t.videos.id }).from(t.videos).where(eq(t.videos.videoNo, no));

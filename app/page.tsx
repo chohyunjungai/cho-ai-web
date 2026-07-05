@@ -1,13 +1,16 @@
 // 홈 = 템플릿 스토어의 정문 (DESIGN §4) — 히어로 없음, 칩 아래 바로 매대
 import Link from 'next/link';
-import { getLatestVideos, getTaskTags, getTemplates } from '@/db/queries';
+import { getDefaultBook, getLatestVideos, getTaskTags, getTemplates } from '@/db/queries';
+import { BookPromo } from '../components/BookPromo';
 import { TemplateCard } from '../components/TemplateCard';
 import { VideoCard } from '../components/VideoCard';
 
 export const revalidate = 3600;
 
 export default async function Home() {
-  const [templates, tags, latest] = await Promise.all([getTemplates(), getTaskTags(), getLatestVideos()]);
+  const [templates, tags, latest, book] = await Promise.all([
+    getTemplates(), getTaskTags(), getLatestVideos(), getDefaultBook(),
+  ]);
   const head = templates.slice(0, 6);
   const rest = templates.slice(6);
   return (
@@ -21,6 +24,7 @@ export default async function Home() {
       <div className="grid">
         {head.map((t) => <TemplateCard key={t.slug} t={t} />)}
       </div>
+      {book && <BookPromo book={book} />}
       <section className="sect" aria-label="최신 영상">
         <h2>최신 영상</h2>
         <div className="vgrid">
