@@ -4,13 +4,15 @@ import { sql } from '../src/db/client';
 
 const ISBN = '9791124516218';
 const TITLE = '유튜브 AI 비서 고용하기';
-const TAGLINE = '1시간 걸리던 채널 분석, 5초 만에 — 제미나이×노트북LM×구글시트';
+const SUBTITLE = '제미나이 X 노트북LM X 구글 스프레드시트';
+const TAGLINE = '나만의 ‘슈퍼유튜브시트’ 만들고 데이터로 내 채널 떡상시키기';
 const COVER = 'https://image.yes24.com/goods/189823964/xl';
 
 await sql`
-  INSERT INTO books (isbn, title, author, cover_url, note)
-  VALUES (${ISBN}, ${TITLE}, '조현정', ${COVER}, ${TAGLINE})
-  ON CONFLICT (isbn) DO UPDATE SET title = EXCLUDED.title, author = EXCLUDED.author,
+  INSERT INTO books (isbn, title, subtitle, author, publisher, cover_url, note)
+  VALUES (${ISBN}, ${TITLE}, ${SUBTITLE}, '조현정', '골든래빗', ${COVER}, ${TAGLINE})
+  ON CONFLICT (isbn) DO UPDATE SET title = EXCLUDED.title, subtitle = EXCLUDED.subtitle,
+    author = EXCLUDED.author, publisher = EXCLUDED.publisher,
     cover_url = EXCLUDED.cover_url, note = EXCLUDED.note`;
 
 const LINKS: [string, string][] = [

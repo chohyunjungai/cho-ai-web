@@ -87,20 +87,23 @@ export default async function VideoDetail({ params }: { params: Promise<{ id: st
 }
 
 function PromoBlock({ books, promo, videoId }: {
-  books: { isbn: string; title: string; coverUrl: string | null; note: string | null }[];
-  promo: { kind: string; title: string; tagline: string | null; imagePath: string | null; targetUrl: string | null; isbn: string | null } | null;
+  books: { isbn: string; title: string; subtitle: string | null; author: string | null; publisher: string | null; coverUrl: string | null; note: string | null }[];
+  promo: { kind: string; title: string; tagline: string | null; imagePath: string | null; targetUrl: string | null } | null;
   videoId: string;
 }) {
-  // video_books 직접 연결이 우선, 없으면 기본 프로모(책이면 서점 버튼 동일 렌더)
-  const book = books[0]
-    ?? (promo?.isbn ? { isbn: promo.isbn, title: promo.title, coverUrl: promo.imagePath, note: promo.tagline } : null);
+  const book = books[0];
   if (book) {
+    // 서점 스타일: 표지 원본 + 그림자, 제목·부제·카피·저자 (DESIGN §3-2b)
     return (
       <div className="promo">
-        <div className="cover">{book.coverUrl ? <img src={book.coverUrl} alt={book.title} /> : book.title}</div>
+        <div className="cover">
+          {book.coverUrl ? <img src={book.coverUrl} alt={`${book.title} 표지`} /> : book.title}
+        </div>
         <div>
-          <p className="eyebrow">이 채널을 만든 사람의 책 · {book.title}</p>
-          <p className="copy">{book.note ?? book.title}</p>
+          <p className="b-title">{book.title}</p>
+          {book.subtitle && <p className="b-sub">{book.subtitle}</p>}
+          {book.note && <p className="b-copy">{book.note}</p>}
+          <p className="b-author">{[book.author && `${book.author} 저`, book.publisher].filter(Boolean).join(' | ')}</p>
           <div className="pstores">
             {(['kyobo', 'yes24', 'aladin'] as const).map((s) => (
               <a key={s} className="pstore" href={`/out/${s}/${book.isbn}?v=${videoId}`} target="_blank" rel="noopener">
@@ -117,8 +120,8 @@ function PromoBlock({ books, promo, videoId }: {
       <div className="promo">
         <div className="cover">{promo.imagePath ? <img src={promo.imagePath} alt={promo.title} /> : promo.title}</div>
         <div>
-          <p className="eyebrow">조현정의AI실험실</p>
-          <p className="copy">{promo.tagline ?? promo.title}</p>
+          <p className="b-title">{promo.title}</p>
+          {promo.tagline && <p className="b-copy">{promo.tagline}</p>}
           {promo.targetUrl && (
             <div className="pstores">
               <a className="pstore" href={promo.targetUrl} target="_blank" rel="noopener">

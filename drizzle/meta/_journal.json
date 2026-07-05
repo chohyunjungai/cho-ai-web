@@ -29,6 +29,13 @@
       "when": 1783265645579,
       "tag": "0003_search-trgm",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1783270377349,
+      "tag": "0004_book-subtitle-publisher",
+      "breakpoints": true
     }
   ]
 }

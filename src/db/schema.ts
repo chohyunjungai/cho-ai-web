@@ -104,9 +104,11 @@ export const clicks = pgTable('clicks', {
 export const books = pgTable('books', {
   isbn: text('isbn').primaryKey(),                   // ISBN-13 (불변)
   title: text('title').notNull(),
+  subtitle: text('subtitle'),
   author: text('author'),
+  publisher: text('publisher'),
   coverUrl: text('cover_url'),
-  note: text('note'),
+  note: text('note'),                                // 배너 카피 한 줄
 });
 
 export const bookLinks = pgTable('book_links', {

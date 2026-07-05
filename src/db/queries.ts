@@ -80,14 +80,24 @@ export async function getVideo(id: string) {
     .innerJoin(t.videoTemplates, eq(t.videoTemplates.templateSlug, t.templates.slug))
     .where(and(eq(t.videoTemplates.videoId, id), publishedTemplates))
     .then((rows) => rows.map((r) => r.templates));
-  const books = await db
-    .select({ isbn: t.books.isbn, title: t.books.title, coverUrl: t.books.coverUrl, note: t.books.note })
+  const bookCols = {
+    isbn: t.books.isbn, title: t.books.title, subtitle: t.books.subtitle,
+    author: t.books.author, publisher: t.books.publisher,
+    coverUrl: t.books.coverUrl, note: t.books.note,
+  };
+  let books = await db
+    .select(bookCols)
     .from(t.videoBooks)
     .innerJoin(t.books, eq(t.books.isbn, t.videoBooks.isbn))
     .where(eq(t.videoBooks.videoId, id));
-  const promo = books.length === 0
+  let promo = books.length === 0
     ? (await db.select().from(t.promos).where(eq(t.promos.active, true)).orderBy(t.promos.sort).limit(1))[0] ?? null
     : null;
+  // 기본 프로모가 책이면 책 데이터로 통일해 렌더 (배너 한 가지 경로)
+  if (promo?.isbn) {
+    books = await db.select(bookCols).from(t.books).where(eq(t.books.isbn, promo.isbn));
+    if (books.length) promo = null;
+  }
   const browse = await db.execute(sql`
     SELECT DISTINCT tp.slug, tp.title, tp.type, tp.preview_path AS "previewPath",
            tp.requires_auth AS "requiresAuth", NULL::int AS "videoNo"
